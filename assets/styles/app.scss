@@ -1,0 +1,18 @@
+$primary: #264653;
+$secondary: #2A9D8F;
+
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background-color: $primary;
+}
+
+h1 {
+    color: $secondary;
+}
+
+.nav-text{
+    color: $secondary;
+    font-size: 1.5em;
+    text-decoration: none;
+}
