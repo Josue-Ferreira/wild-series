@@ -2,41 +2,37 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Program;
+use App\Entity\Season;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProgramFixtures extends Fixture implements DependentFixtureInterface
+class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
     const PROGRAMS = [
         ['title' => 'Foundation', 'synopsis' => 'Voyage stellaire', 'poster' => 'interstellar', 'category' => 'category_Science-Fiction'],
         ['title' => 'Indiana Jones', 'synopsis' => 'Archéologie', 'poster' => 'indiana', 'category' => 'category_Aventure'],
         ['title' => 'One Piece', 'synopsis' => 'Piraterie', 'poster' => 'onePiece', 'category' => 'category_Animation']
     ];
-    
+
     public function load(ObjectManager $manager)
     {
         foreach(self::PROGRAMS as $programInfos){
-            $program = new Program();
-            $program->setTitle($programInfos['title']);
-            $program->setSynopsis($programInfos['synopsis']);
-            $program->setPoster($programInfos['poster']);
+            $season = new Season();
+            $season->setNumber(1);
             
-            $category = $this->getReference($programInfos['category']);
-            $program->setCategory($category);
+            $program = $this->getReference('program_'.$programInfos['poster']);
+            $season->setProgram($program);
 
-            $this->addReference('program_'.$programInfos['poster'], $program);
-
-            $manager->persist($program);
+            $this->addReference('season_1_'.$programInfos['poster'], $season);
+            $manager->persist($season);
         }
         $manager->flush();
     }
 
-    public function getDependencies()
-    {
+    public function getDependencies(){
         return [
-            CategoryFixtures::class,
+            ProgramFixtures::class
         ];
     }
 }
